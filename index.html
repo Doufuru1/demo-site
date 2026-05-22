@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卡皮巴拉 Demo</title>
+    <title>卡皮巴拉 — 数字工作室</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #f9fafb;
+            --surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --border: rgba(226, 232, 240, 0.5);
+            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,87 +25,541 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            color: white;
+            background: rgba(249, 250, 251, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .container {
-            text-align: center;
-            padding: 2rem;
+        .logo {
+            font-weight: 600;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
         }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
         }
 
-        .emoji {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            animation: bounce 2s infinite;
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Asymmetric Split */
+        .hero {
+            min-height: 100dvh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 0 5vw;
+            gap: 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            padding-left: 2vw;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-light);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
             margin-bottom: 2rem;
         }
 
-        .info {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 2rem;
+        .hero-label .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        .info p {
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            max-width: 12ch;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 45ch;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            padding: 1rem 2rem;
+            background: var(--text-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface);
+            border-color: var(--text-secondary);
+        }
+
+        /* Hero Visual - Bento Grid */
+        .hero-visual {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1rem;
+            height: 500px;
+        }
+
+        .bento-card {
+            background: var(--surface);
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.08);
+        }
+
+        .bento-main {
+            grid-row: span 2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #e0e7ff 0%, #d1fae5 100%);
+            opacity: 0.3;
+        }
+
+        .bento-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 60px;
+            margin-top: auto;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--accent);
+            border-radius: 4px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease, height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .chart-bar:nth-child(1) { height: 40%; }
+        .chart-bar:nth-child(2) { height: 65%; }
+        .chart-bar:nth-child(3) { height: 45%; }
+        .chart-bar:nth-child(4) { height: 80%; }
+        .chart-bar:nth-child(5) { height: 55%; }
+        .chart-bar:nth-child(6) { height: 90%; }
+        .chart-bar:nth-child(7) { height: 70%; }
+
+        .bento-card:hover .chart-bar {
+            opacity: 1;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 5vw;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 50ch;
+        }
+
+        /* Asymmetric Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card.large {
+            grid-row: span 2;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-light);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 5vw;
+            text-align: center;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
-        .badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            margin: 0.5rem;
-            font-size: 0.85rem;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 8rem;
+                gap: 3rem;
+            }
+
+            .hero-content {
+                padding-left: 0;
+            }
+
+            .hero-visual {
+                height: 350px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card.large {
+                grid-row: auto;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Shimmer Loading Effect */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="emoji">🦊</div>
-        <h1>Hello, 卡皮巴拉!</h1>
-        <p>这是一个由 OpenClaw 自动创建和部署的 Demo 网站</p>
-        
-        <div>
-            <span class="badge">GitHub</span>
-            <span class="badge">Vercel</span>
-            <span class="badge">OpenClaw</span>
-        </div>
+    <nav>
+        <div class="logo">卡皮巴拉</div>
+        <ul class="nav-links">
+            <li><a href="#work">作品</a></li>
+            <li><a href="#services">服务</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </nav>
 
-        <div class="info">
-            <p>🚀 自动部署时间: <span id="time"></span></p>
-            <p>📦 技术栈: HTML + CSS</p>
-            <p>🎯 部署平台: Vercel</p>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">
+                <span class="dot"></span>
+                现已开放合作
+            </div>
+            <h1>打造令人难忘的数字体验</h1>
+            <p>我们是一家专注于高端 Web 设计与开发的数字工作室，为品牌创造独特的视觉语言和流畅的交互体验。</p>
+            <div class="cta-group">
+                <button class="btn-primary">开始项目</button>
+                <button class="btn-secondary">查看案例</button>
+            </div>
         </div>
-    </div>
+        <div class="hero-visual">
+            <div class="bento-card bento-main">
+                <div class="bento-content">
+                    <div class="stat-number">2.4M+</div>
+                    <div class="stat-label">年度用户访问量</div>
+                </div>
+                <div class="mini-chart">
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                    <div class="chart-bar"></div>
+                </div>
+            </div>
+            <div class="bento-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">客户满意度</div>
+            </div>
+            <div class="bento-card">
+                <div class="stat-number">156</div>
+                <div class="stat-label">完成项目</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="section-header">
+            <h2>我们的服务</h2>
+            <p>从概念到上线，提供全流程的数字产品设计服务</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card large">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M9 21V9"/>
+                    </svg>
+                </div>
+                <h3>品牌网站设计</h3>
+                <p>为企业打造独特的品牌数字形象。我们注重每一个像素，从排版到动效，确保网站在视觉上脱颖而出，同时保持优秀的用户体验和性能表现。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3>SaaS 产品界面</h3>
+                <p>设计复杂数据仪表盘和用户工作流界面</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>动效与交互</h3>
+                <p>为产品注入生命力，打造流畅的微交互体验</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p> 卡皮巴拉网络科技 — 用设计创造价值</p>
+    </footer>
 
     <script>
-        document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Animate chart bars on load
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach((bar, index) => {
+                setTimeout(() => {
+                    bar.style.height = bar.style.height || bar.style.cssText.match(/height:\s*(\d+%)/)?.[1] || '50%';
+                }, index * 100);
+            });
+        });
+
+        // Magnetic button effect
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+        });
     </script>
 </body>
 </html>
